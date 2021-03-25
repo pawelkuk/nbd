@@ -1,0 +1,13 @@
+version: "3.5"
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "8081:8081"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    volumes:
+      - ./data/db:/data/db
+      - ./cwiczenia2.json:/data/cwiczenia2.json
+# docker-compose exec mongo sh "mongoimport --file /data/cwiczenia2.json --db nbd --jsonArray -c people --authenticationDatabase admin -u admin -p admin"
