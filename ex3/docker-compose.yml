@@ -10,4 +10,7 @@ services:
     volumes:
       - ./data/db:/data/db
       - ./cwiczenia2.json:/data/cwiczenia2.json
-# docker-compose exec mongo sh "mongoimport --file /data/cwiczenia2.json --db nbd --jsonArray -c people --authenticationDatabase admin -u admin -p admin"
+      - ./tasks:/root/tasks
+# In the container type:
+# mongoimport --file /data/cwiczenia2.json --db nbd --jsonArray -c people --authenticationDatabase admin -u admin -p admin
+# mongo --authenticationDatabase admin -u admin -p admin
