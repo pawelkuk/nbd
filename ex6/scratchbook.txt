@@ -1,0 +1,105 @@
+tmp:
+```neo4j
+MERGE (f:Flight)<-[:ASSIGN]-(t:Ticket{class:'economy'}) 
+with f match (a:Airport{name:"LAX"}) 
+call apoc.path.expandConfig(a, { minLevel:2, //maxLevel:7, sequence:"Airport,ORIGIN,Flight,DESTINATION" }) yield path with path, reduce(price=0, n in [nn in nodes(path) WHERE 'Flight' IN LABELS(nn)] | price + n.price) AS totalPrice where totalPrice <3000 and all(i in range(1, length(path)-1, 2) where nodes(path)[i].date < nodes(path)[i+2].date  ) return path, totalPrice limit 10
+```
+match path = shortestPath((:Airport{name:"LAX"})-[*]-(:Airport{name:"DAY"}))
+return path
+
+```neo4j
+MERGE 
+	(f:Flight)<-[:ASSIGN]-(t:Ticket{class:'economy'})
+with
+	f
+match
+	(a:Airport{name:"LAX"})
+call
+	apoc.path.expandConfig(a, {
+    	minLevel:2,
+        maxLevel:7,
+        sequence:"Airport,ORIGIN,Flight,DESTINATION"
+    })
+yield
+	path
+match
+	path2 = allShortestPaths((:Airport{name:"DAY"})-[*]-(:Airport{name:"LAX"}))
+with 
+	path2, reduce(price=0, n in [nn in nodes(path2) WHERE 'Flight' IN LABELS(nn)] | price + n.price) 
+        AS totalPrice
+//where 
+//    all(i in range(1, length(path)-1, 2) 
+//    	where nodes(path)[i].date + nodes(path)[i].duration< nodes(path)[i+2].date  
+//    )
+return
+	path2, totalPrice
+limit 2
+```
+
+```
+MERGE 
+	(f:Flight)<-[:ASSIGN]-(t:Ticket{class:'economy'})
+with
+	f
+match
+	path = allShortestPaths((:Airport{name:"DAY"})-[*]-(:Airport{name:"LAX"}))
+with 
+	path, reduce(price=0, n in [nn in nodes(path) WHERE 'Flight' IN LABELS(nn)] | price + n.price) 
+        AS totalPrice
+where 
+    all(i in range(1, length(path)-1, 2) 
+    	where nodes(path)[i].date < nodes(path)[i+2].date  
+    )
+return
+	path, totalPrice
+limit 20
+
+```
+
+
+MERGE 
+	(f:Flight)<-[:ASSIGN]-(t:Ticket{class:'economy'})
+with
+	f
+match
+	path = (:Airport{name:"LAX"})-[*..6]-(:Airport{name:"DAY"})
+with 
+	path, reduce(price=0, n in [nn in nodes(path) WHERE 'Flight' IN LABELS(nn)] | price + n.price) 
+        AS totalPrice
+where 
+    all(i in range(1, length(path)-1, 2) 
+    	where nodes(path)[i].date + nodes(path)[i].duration < nodes(path)[i+2].date  
+    )
+return
+	path, totalPrice
+limit 20
+
+
+MERGE 
+	(f:Flight)<-[:ASSIGN]-(t:Ticket{class:'economy'})
+with
+	f
+match
+	(lax:Airport{name:"LAX"})
+match
+	(day:Airport{name:"DAY"})
+call
+	apoc.path.expandConfig(lax, {
+    	minLevel:2,
+		maxLevel:7,
+        sequence:"Airport,ORIGIN,Flight,DESTINATION",
+        endNodes:[day]
+    })
+yield
+	path
+with 
+	path, reduce(price=0, n in [nn in nodes(path) WHERE 'Flight' IN LABELS(nn)] | price + n.price) 
+        AS totalPrice
+//where 
+//    all(i in range(1, length(path)-1, 2) 
+//    	where nodes(path)[i].date + nodes(path)[i].duration< nodes(path)[i+2].date  
+//    )
+return
+	path, totalPrice
+limit 2
+
