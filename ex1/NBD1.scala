@@ -1,6 +1,6 @@
 import scala.annotation.tailrec
 
-object HelloWorld {
+object NBD1 {
   val weekdays = Array("Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela")
   val products = Map("mleko"->4d, "jajka"->3d, "woda"-> 1.5d, "chleb"-> 3.59d)
 
@@ -126,20 +126,35 @@ object HelloWorld {
 
 
   def main(args: Array[String]): Unit = {
+    println("\ntask1a()")
     println(task1a())
+    println("\ntask1b()")
     println(task1b())
+    println("\ntask1c()")
     println(task1c())
+    println("\ntask2a()")
     println(task2a())
+    println("\ntask2b()")
     println(task2b())
+    println("\ntask3()")
     println(task3())
+    println("\ntask4a()")
     println(task4a())
+    println("\ntask4b()")
     println(task4b())
+    println("\ntask4c()")
     println(task4c())
+    println("\ntask5()")
     println(task5())
+    println("\ntask6")
     task6()
+    println("\ntask7")
     task7()
+    println("\ntask8")
     println(task8(List(0,1,2,3,0,1,2,0,1,0,0)))
+    println("\ntask9")
     println(task9(List(1,2,3,4,5)))
+    println("\ntask610")
     println(task10(List(-100d, 100d, 0, 3, -2)))
   }
 }
