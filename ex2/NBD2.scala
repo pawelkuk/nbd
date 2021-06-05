@@ -113,3 +113,30 @@ object NBD2 {
 }
 
 
+class Osoba {
+  private var _imie: String = "Alicja"
+  private var _nazwisko: String = "Abacka"
+  private var _podatek: Double = 0d
+
+  def imie: String = _imie
+  def nazwisko: String = _nazwisko
+  def podatet: Double = _podatek
+
+}
+
+trait Student extends Osoba {
+  def podatek: Double = 0d
+}
+
+trait Nauczyciel extends Pracownik {
+  override def podatek: Double = 0.1 * pensja
+}
+
+trait Pracownik extends Osoba{
+  private var _pensja = 0d
+  def pensja: Double = _pensja
+  def pensja_=(nowaPensja:Double): Unit = _pensja = nowaPensja
+  def podatek: Double = 0.2 * pensja
+
+}
+
